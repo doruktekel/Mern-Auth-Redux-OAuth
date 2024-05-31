@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <div className="bg-slate-200 ">
       <div className="max-w-6xl mx-auto flex justify-between p-3">
-        <Link to={"/"} className="font-bold">
+        <Link to={"/"} className="font-semibold text-xl">
           Mern Auth
         </Link>
 
@@ -15,8 +15,8 @@ const Header = () => {
           <Link to={"/about"}>
             <li>About</li>
           </Link>
-          <Link to={"/profile"}>
-            <li>Profile</li>
+          <Link to={"/signIn"}>
+            <li>Sign In</li>
           </Link>
         </ul>
       </div>
