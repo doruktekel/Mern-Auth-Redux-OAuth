@@ -4,8 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon /api/index.js",
-    "start": "node /api/index.js"
+    "api": "nodemon ./api/index.js",
+    "start": "node ./api/index.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run api\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.2"
   }
 }
