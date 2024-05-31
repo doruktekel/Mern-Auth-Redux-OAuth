@@ -1,7 +1,16 @@
 import express from "express";
+import dbConnection from "./config/db.js";
+import dotenv from "dotenv";
+import userRouter from "./routes/userRoute.js";
 
 const app = express();
 
-app.listen(9009, () => {
+dotenv.config();
+
+dbConnection();
+
+app.use("/api/user", userRouter);
+
+app.listen(3000, () => {
   console.log("listeninng port 3000");
 });
