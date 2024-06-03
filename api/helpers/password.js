@@ -8,4 +8,8 @@ const hashPassword = async (pass) => {
   }
 };
 
-export { hashPassword };
+const comparePassword = async (pass, userPass) => {
+  return await bcrypt.compare(pass, userPass);
+};
+
+export { hashPassword, comparePassword };
