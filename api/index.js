@@ -1,12 +1,15 @@
 import express from "express";
 import dbConnection from "./config/db.js";
 import dotenv from "dotenv";
+import cors from "cors";
 import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoute.js";
+import errorMiddleware from "./middlewares/customErrorMiddleware.js";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 dotenv.config();
 
@@ -15,15 +18,7 @@ dbConnection();
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal server error";
-  return res.status(statusCode).json({
-    success: false,
-    statusCode,
-    message,
-  });
-});
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 3000;
 
