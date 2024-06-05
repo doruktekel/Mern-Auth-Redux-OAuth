@@ -28,7 +28,7 @@ const signin = async (req, res, next) => {
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }
-    const compare = comparePassword(password, user.password);
+    const compare = await comparePassword(password, user.password);
     if (!compare) {
       return next(errorHandler(401, "Wrong credentials"));
     }
