@@ -1,3 +1,4 @@
+import { strict } from "assert";
 import { comparePassword, hashPassword } from "../helpers/password.js";
 import UserModel from "../models/userModel.js";
 import { errorHandler } from "../utils/errorHandler.js";
@@ -45,12 +46,63 @@ const signin = async (req, res, next) => {
     const { password: _, ...rest } = user._doc;
     // const { password: psw, ...rest } = user.toObject()  // same way _:nothing _doc & to Object convert to js object for th user mongoose model
     //or you can give the general way email : user.email vb...
-    res.status(200).json({
-      rest,
-    });
+    res.status(200).json(rest);
   } catch (error) {
     next(error);
   }
 };
 
-export { signup, signin };
+const google = async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const user = await UserModel.findOne({ email });
+    if (user) {
+      const token = jwt.sign({ id: user_id }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "30d",
+      });
+      const { password: _, ...rest } = user._doc;
+      res
+        .status(200)
+        .json(rest)
+        .cookie("token", token, {
+          httpOnly: true,
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          sameSite: strict,
+        });
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = await hashPassword(generatedPassword);
+      const { name, email, imageURL } = req.body;
+
+      const newUser = new UserModel({
+        username:
+          name.split(" ").join("").toLowerCase() +
+          Math.random().toString(36).slice(-8),
+        email,
+        password: hashedPassword,
+        profilePicture: imageURL,
+      });
+
+      await newUser.save();
+
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "30d",
+      });
+      const { password: _, ...rest } = newUser._doc;
+      res
+        .status(200)
+        .json(rest)
+        .cookie("token", token, {
+          httpOnly: true,
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          sameSite: strict,
+        });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { signup, signin, google };

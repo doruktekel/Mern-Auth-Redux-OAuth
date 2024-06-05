@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Oauth from "../components/Oauth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const SignUp = () => {
     try {
       setLoading(true);
       setError(false);
-      await axios.post("http://localhost:3000/api/auth/signup", formData);
+      await axios.post("/api/auth/signup", formData);
       setLoading(false);
       navigate("/signin");
     } catch (error) {
@@ -70,6 +71,7 @@ const SignUp = () => {
           Sign up
         </button>
       </form>
+      <Oauth />
       <div>
         <p>You have an account ?</p>
         <Link to={"/signin"} className="text-blue-500">
