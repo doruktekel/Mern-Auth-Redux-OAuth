@@ -7,6 +7,7 @@ import {
   signInSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Oauth from "../components/Oauth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -30,10 +31,7 @@ const SignIn = () => {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await axios.post(
-        "http://localhost:3000/api/auth/signin",
-        formData
-      );
+      const res = await axios.post("api/auth/signin", formData);
       console.log(res);
       if (res.data.success === false) {
         console.log("girdi buraya");
@@ -76,6 +74,7 @@ const SignIn = () => {
           Sign in
         </button>
       </form>
+      <Oauth />
       <div>
         <p>Dont you have an account ?</p>
         <Link to={"/signup"} className="text-blue-500">
