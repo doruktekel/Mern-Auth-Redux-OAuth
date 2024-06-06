@@ -67,14 +67,14 @@ const google = async (req, res, next) => {
         .cookie("token", token, {
           httpOnly: true,
           maxAge: 30 * 24 * 60 * 60 * 1000,
-          sameSite: strict,
+          sameSite: "strict",
         });
     } else {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
       const hashedPassword = await hashPassword(generatedPassword);
-      const { name, email, imageURL } = req.body;
+      const { name, email, photo } = req.body;
 
       const newUser = new UserModel({
         username:
@@ -82,7 +82,7 @@ const google = async (req, res, next) => {
           Math.random().toString(36).slice(-8),
         email,
         password: hashedPassword,
-        profilePicture: imageURL,
+        profilePicture: photo,
       });
 
       await newUser.save();
@@ -97,7 +97,7 @@ const google = async (req, res, next) => {
         .cookie("token", token, {
           httpOnly: true,
           maxAge: 30 * 24 * 60 * 60 * 1000,
-          sameSite: strict,
+          sameSite: "strict",
         });
     }
   } catch (error) {
