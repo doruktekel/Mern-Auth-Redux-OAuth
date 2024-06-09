@@ -32,16 +32,14 @@ const SignIn = () => {
     try {
       dispatch(signInStart());
       const res = await axios.post("api/auth/signin", formData);
-      console.log(res);
-      if (res.data.success === false) {
-        console.log("girdi buraya");
-        dispatch(signInFailure(res.data));
+      const data = res.data;
+      if (data.success === false) {
+        dispatch(signInFailure(data));
         return;
       }
-      dispatch(signInSuccess(res.data));
+      dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
-      console.log("lknwefnlfflk");
       dispatch(signInFailure(error));
     }
   };
