@@ -92,13 +92,13 @@ const google = async (req, res, next) => {
       });
       const { password: _, ...rest } = newUser._doc;
       res
-        .status(200)
-        .json(rest)
         .cookie("token", token, {
           httpOnly: true,
           maxAge: 30 * 24 * 60 * 60 * 1000,
           sameSite: "strict",
-        });
+        })
+        .status(200)
+        .json(rest);
     }
   } catch (error) {
     next(error);
