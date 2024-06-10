@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoute.js";
 import errorMiddleware from "./middlewares/customErrorMiddleware.js";
+import path from "path";
 
 const app = express();
 app.use(express.json());
@@ -17,10 +18,15 @@ app.use(
   })
 );
 app.use(cookieParser());
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/client/dist")));
 
 dotenv.config();
-
 dbConnection();
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
@@ -28,7 +34,6 @@ app.use("/api/auth", authRouter);
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(3000, () => {
   console.log("listeninng port 3000");
 });
