@@ -12,6 +12,10 @@ import {
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  signOutSuccess,
 } from "../redux/user/userSlice";
 
 const Profile = () => {
@@ -64,20 +68,42 @@ const Profile = () => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      console.log(formData);
       const res = await axios.post(
         `/api/user/update/${currentUser._id}`,
         formData
       );
-      const data = await res.data;
+      const data = res.data;
       if (data.success === false) {
         dispatch(updateUserFailure(data));
       }
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
     } catch (error) {
-      console.log("ljkndfsljkndfsjkldfslkjfsdkl");
       dispatch(updateUserFailure(error));
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await axios.delete(`api/user/delete/${currentUser._id}`);
+      const data = res.data;
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data));
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error));
+      console.log(error);
+    }
+  };
+
+  const handleSignOutAccount = async () => {
+    try {
+      await axios.get("api/auth/signout");
+      dispatch(signOutSuccess());
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -146,8 +172,8 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between text-red-500 cursor-pointer">
-        <span>Delece Account</span>
-        <span>Sign Out</span>
+        <span onClick={handleDeleteAccount}>Delece Account</span>
+        <span onClick={handleSignOutAccount}>Sign Out</span>
       </div>
       <p className="text-red-500 mt-3">{error && "Something went wrong"}</p>
       <p className="text-green-500 mt-3">
