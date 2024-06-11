@@ -19,13 +19,13 @@ app.use(
 );
 app.use(cookieParser());
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "/client/dist")));
+app.use(express.static(path.join(__dirname, "/client")));
 
 dotenv.config();
 dbConnection();
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "client", "index.html"));
 });
 
 app.use("/api/user", userRouter);
@@ -34,6 +34,6 @@ app.use("/api/auth", authRouter);
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 3000;
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log("listeninng port 3000");
 });
