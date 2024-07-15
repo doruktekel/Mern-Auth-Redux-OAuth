@@ -7,10 +7,10 @@ import SignUp from "./pages/SignUp";
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
 
-import axios from "axios";
+// import axios from "axios";
 
-axios.defaults.baseURL = "https://mern-auth-redux-lhvu.onrender.com";
-axios.defaults.withCredentials = true;
+// axios.defaults.baseURL = "https://mern-auth-redux-oauth.onrender.com";
+// axios.defaults.withCredentials = true;
 
 const App = () => {
   return (

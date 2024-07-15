@@ -1,7 +1,7 @@
 import express from "express";
 import dbConnection from "./config/db.js";
 import dotenv from "dotenv";
-import cors from "cors";
+// import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoute.js";
@@ -11,12 +11,13 @@ import path from "path";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    credentials: true,
-    origin: "https://mern-auth-redux-lhvu.onrender.com",
-  })
-);
+// app.use(
+//   cors({
+//     credentials: true,
+//      origin: "https://mern-auth-redux-lhvu.onrender.com",
+//     origin: "https://mern-auth-redux-oauth.onrender.com",
+//   })
+// );
 app.use(cookieParser());
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/client/dist")));
